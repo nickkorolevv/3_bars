@@ -3,28 +3,28 @@ import json
 
 url = "https://devman.org/media/filer_public/95/74/\
 957441dc-78df-4c99-83b2-e93dfd13c2fa/bars.json"
-response = requests.get(url)
-bars = response.json()
+response_from_url = requests.get(url)
+bars = response_from_url.json()
 # поиск по ключу features
 dict_bars = bars["features"]
 # создание списка для поиска max и min
 arr_0 = []
 
-for i in dict_bars:
-    seats = i["properties"]["Attributes"]["SeatsCount"]
+for list_item in dict_bars:
+    seats = list_item["properties"]["Attributes"]["SeatsCount"]
 # добавляем в список
     arr_0.append(seats)
 
 max_size = max(arr_0)
 min_size = min(arr_0)
-for i in dict_bars:
-    seats = i["properties"]["Attributes"]["SeatsCount"]
+for list_item in dict_bars:
+    seats = list_item["properties"]["Attributes"]["SeatsCount"]
     if max_size == seats:
         print("Самый большой бар: ")
-        print(i["properties"]["Attributes"]["Name"])
+        print(list_item["properties"]["Attributes"]["Name"])
     elif min_size == seats:
         print("Самый маленький бар: ")
-        print(i["properties"]["Attributes"]["Name"])
+        print(list_item["properties"]["Attributes"]["Name"])
 
 print("Вместимость самого большого бара {}".format(max_size))
 print("Вместимость самого маленького бара {}".format(min_size))
@@ -34,17 +34,17 @@ x_coord = float(input("Введите координаты \n"))
 y_coord = float(input("Введите координаты \n"))
 
 arr_1 = []
-for i in dict_bars:
-    coordinates = i["geometry"]["coordinates"]
+for list_item in dict_bars:
+    coordinates = list_item["geometry"]["coordinates"]
     arr_1.append(coordinates)
 arr_2 = []
-for i in arr_1:
+for list_item in arr_1:
 
-    diff_x = x_coord-i[0]
+    diff_x = x_coord-list_item[0]
 
 # находим разницу по координатам
 
-    diff_y = y_coord-i[1]
+    diff_y = y_coord-list_item[1]
 
 # находим сумму разности x и y
     sum_of_diffs = abs(diff_x) + abs(diff_y)
