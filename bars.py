@@ -1,11 +1,12 @@
 import requests
 import json
 from token import token
-url = "https://apidata.mos.ru/v1/features/1796?api_key={}".format(token)
+url = "https://apidata.mos.ru/v1/features/1796"
 
 
 def get_bars():
-    response_from_url = requests.get(url)
+    payload={"api_key":token}
+    response_from_url = requests.get(url, params=payload)
     r_json = response_from_url.json()
     bars = r_json["features"]
     return bars
