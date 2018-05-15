@@ -1,6 +1,7 @@
 import requests
 import json
-from token import token
+import misc
+token=misc.token
 url = "https://apidata.mos.ru/v1/features/1796"
 
 
