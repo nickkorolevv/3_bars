@@ -6,7 +6,7 @@
 зарегистрироваться на сайте и получить ключ API;
 скачать файл по ссылке вида https://apidata.mos.ru/v1/features/1796?api_key={place_your_API_key_here}.
 
-Скачать файл можно по ссылку https://devman.org/media/filer_public/95/74/957441dc-78df-4c99-83b2-e93dfd13c2fa/bars.json
+Скачать файл можно по ссылке https://devman.org/media/filer_public/95/74/957441dc-78df-4c99-83b2-e93dfd13c2fa/bars.json
 
    
 
