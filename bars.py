@@ -1,6 +1,6 @@
 import requests
 import json
-token = "your_token"
+from token import token
 url = "https://apidata.mos.ru/v1/features/1796?api_key={}".format(token)
 
 
