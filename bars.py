@@ -1,51 +1,34 @@
 import json
+import sys
 
 
-def get_json():
-    with open("bars.json", "r", encoding="utf-8") as file_handler:
+def get_json(filepath):
+    with open(filepath, "r", encoding="utf-8") as file_handler:
         return json.load(file_handler)
 
 
 def get_bars():
-    bars = get_json()["features"]
+    data_file = get_json(filepath)
+    bars = data_file["features"]
     return bars
 
 
-def get_max_size():
-    buffer_to_findmax = []
-    for list_item in get_bars():
-        seats = list_item["properties"]["Attributes"]["SeatsCount"]
-        buffer_to_findmax.append(seats)
-    max_size = max(buffer_to_findmax)
-    return max_size
-
-
-def get_min_size():
-    buffer_to_findmin = []
-    for list_item in get_bars():
-        seats = list_item["properties"]["Attributes"]["SeatsCount"]
-        buffer_to_findmin.append(seats)
-    min_size = min(buffer_to_findmin)
-    return min_size
-
-
 def max_bar_name():
-    for list_item in get_bars():
-        seats = list_item["properties"]["Attributes"]["SeatsCount"]
-        if get_max_size() == seats:
-            return list_item["properties"]["Attributes"]["Name"]
+    bars = get_bars()
+    max_bar = max(bars, key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+    return max_bar["properties"]["Attributes"]["Name"], max_bar["properties"]["Attributes"]["SeatsCount"]
 
 
 def min_bar_name():
-    for list_item in get_bars():
-        seats = list_item["properties"]["Attributes"]["SeatsCount"]
-        if get_min_size() == seats:
-            return list_item["properties"]["Attributes"]["Name"]
+    bars = get_bars()
+    min_bar = min(bars, key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+    return min_bar["properties"]["Attributes"]["Name"], min_bar["properties"]["Attributes"]["SeatsCount"]
 
 
 def find_nearest_bar(x_coord, y_coord):
     coord_buff = []
-    for list_item in get_bars():
+    data_file = get_bars()
+    for list_item in data_file:
         coordinates = list_item["geometry"]["coordinates"]
         coord_buff.append(coordinates)
     nearest_bar_buff = []
@@ -59,31 +42,38 @@ def find_nearest_bar(x_coord, y_coord):
     return get_bars()[min_index]["properties"]["Attributes"]["Name"]
 
 
-def get_input():
+def get_coord():
     x_coord = input("Введите координату X: \n")
     y_coord = input("Введите координату Y: \n")
     try:
         float(x_coord)
         float(y_coord)
+        return x_coord, y_coord
     except ValueError:
         print("""Неверный формат координат, координаты должны быть
     заданы числом с плавающей точкой""")
-    return x_coord, y_coord
 
 
-def printer():
-    print("Вместимость самого большого бара: ", get_max_size())
-    print("Вместимость самого маленького бара: ", get_min_size())
-    print("Самый большой бар: ", max_bar_name())
-    print("Самый маленький бар: ", min_bar_name())
-    x_coord, y_coord = get_input()
+
+def print_bar():
+    min_bar, min_size_of_bar = min_bar_name()
+    max_bar, max_size_of_bar = max_bar_name()
+    print("Вместимость самого большого бара: ", max_size_of_bar)
+    print("Вместимость самого маленького бара: ", min_size_of_bar)
+    print("Самый большой бар: ", max_bar)
+    print("Самый маленький бар: ", min_bar)
+    x_coord, y_coord = get_coord()
     print("Ближайший к Вам бар: ")
     print(find_nearest_bar(float(x_coord), float(y_coord)))
 
 
 def main():
-    printer()
+    print_bar()
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        filepath = format(sys.argv[1])
+    else:
+        filepath = input("Укажите путь до json файла: ")
     main()
