@@ -52,8 +52,8 @@ def find_nearest_bar(x_coord, y_coord):
     for list_item in coord_buff:
         diff_x = (x_coord-list_item[0])**2
         diff_y = (y_coord-list_item[1])**2
-        sum_of_diffs = diff_x + diff_y
-        nearest_bar_buff.append(sum_of_diffs)
+        sum_sqr_of_diffs = (diff_x + diff_y)**0.5
+        nearest_bar_buff.append(sum_sqr_of_diffs)
         min_coord = min(nearest_bar_buff)
     min_index = nearest_bar_buff.index(min_coord)
     return get_bars()[min_index]["properties"]["Attributes"]["Name"]
