@@ -35,7 +35,7 @@ def get_min_seats(bars):
 def find_nearest_bar(x_coord, y_coord):
     nearest_bar = min(bars, key=lambda z: ((z["geometry"]["coordinates"][0]-x_coord)**2
                                  +(z["geometry"]["coordinates"][1]-y_coord)**2)**0.5)
-    return (nearest_bar["properties"]["Attributes"]["Name"])
+    return nearest_bar["properties"]["Attributes"]["Name"]
 
 
 def get_coord():
