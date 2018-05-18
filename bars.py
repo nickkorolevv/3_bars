@@ -39,8 +39,8 @@ def get_coords():
               )
 
 
-def print_bar(bar_type, bar_name):
-    print(bar_type, bar_name)
+def print_bar(bar_type, bar):
+    print(bar_type, bar)
 
 
 if __name__ == "__main__":
