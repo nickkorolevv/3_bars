@@ -25,7 +25,7 @@ def get_min_bar(bars):
 def find_nearest_bar(x_coord, y_coord):
     nearest_bar = min(bars, key=lambda z: ((z["geometry"]["coordinates"][0]-x_coord)**2
                                  +(z["geometry"]["coordinates"][1]-y_coord)**2)**0.5)
-    return nearest_bar["properties"]["Attributes"]["Name"]
+    return nearest_bar
 
 
 def get_coords():
@@ -34,23 +34,13 @@ def get_coords():
     try:
         return float(x_coord), float(y_coord)
     except ValueError:
-        print("Неверный формат координат, координаты должны быть "
-              "заданы числом с плавающей точкой")
+        print("""Неверный формат координат, координаты должны быть 
+              заданы числом с плавающей точкой"""
+              )
 
 
-def bar_types(bar_type):
-    if bar_type == "max_bar":
-        return max_bar
-    elif bar_type == "min_bar":
-        return min_bar
-
-
-def print_bar(bar_type, nearest_bar):
-    print("Ближайший к Вам бар: ", nearest_bar)
-    if bar_type == "max_bar":
-        print("Самый большой бар: ", max_bar)
-    elif bar_type == "min_bar":
-        print("Самый маленький бар: ", min_bar)
+def print_bar(bar_type, bar_name):
+    print(bar_type, bar_name)
 
 
 if __name__ == "__main__":
@@ -66,5 +56,6 @@ if __name__ == "__main__":
     if not (x_coord and y_coord):
         exit("Координаты не введены")
     nearest_bar = find_nearest_bar(x_coord, y_coord)
-    print_bar("max_bar", nearest_bar)
-    print_bar("min_bar", nearest_bar)
+    print_bar("Самый большой бар", max_bar["properties"]["Attributes"]["Name"])
+    print_bar("Самый маленький бар", min_bar["properties"]["Attributes"]["Name"])
+    print_bar("Ближайший к Вам бар", nearest_bar["properties"]["Attributes"]["Name"])
