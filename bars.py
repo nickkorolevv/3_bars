@@ -23,10 +23,13 @@ def get_min_bar(bars):
 
 
 def find_nearest_bar(x_coord, y_coord):
-    nearest_bar = min(bars, key=lambda z: (
-        (z["geometry"]["coordinates"][0]-x_coord)**2
-       +(z["geometry"]["coordinates"][1]-y_coord)**2)**0.5
-        )
+    nearest_bar = min(
+            bars,
+            key=lambda z: (
+                (z["geometry"]["coordinates"][0]-x_coord)**2 +
+                (z["geometry"]["coordinates"][1]-y_coord)**2
+            ) ** 0.5
+    )
     return nearest_bar
 
 
@@ -36,20 +39,19 @@ def get_coords():
     try:
         return float(x_coord), float(y_coord)
     except ValueError:
-        print("""Неверный формат координат, координаты должны быть 
-              заданы числом с плавающей точкой"""
-              )
+        print("Неверный формат координат,\
+         координаты должны быть заданы числом с плавающей точкой")
 
 
-def print_bar(bar_type, bar):
-    print(bar_type, bar)
+def print_bar(bar_type, bar_name):
+    print(bar_type, bar_name["properties"]["Attributes"]["Name"])
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         filepath = sys.argv[1]
     else:
-        exit("Не выбран файл")
+        filepath = "bars.json"
     bars_info = load_data(filepath)
     bars = get_bars(bars_info)
     min_bar = get_min_bar(bars)
@@ -58,6 +60,6 @@ if __name__ == "__main__":
     if not (x_coord and y_coord):
         exit("Координаты не введены")
     nearest_bar = find_nearest_bar(x_coord, y_coord)
-    print_bar("Самый большой бар", max_bar["properties"]["Attributes"]["Name"])
-    print_bar("Самый маленький бар", min_bar["properties"]["Attributes"]["Name"])
-    print_bar("Ближайший к Вам бар", nearest_bar["properties"]["Attributes"]["Name"])
+    print_bar("Самый большой бар", max_bar)
+    print_bar("Самый маленький бар", min_bar)
+    print_bar("Ближайший к Вам бар", nearest_bar)
