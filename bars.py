@@ -17,12 +17,18 @@ def get_bars(bars_info):
 
 
 def get_max_bar(bars):
-    max_bar = max(bars, key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+    max_bar = max(
+        bars,
+        key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"]
+    )
     return max_bar
 
 
 def get_min_bar(bars):
-    min_bar = min(bars, key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+    min_bar = min(
+        bars, 
+        key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"]
+    )
     return min_bar
 
 
