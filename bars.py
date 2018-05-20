@@ -1,10 +1,14 @@
 import json
 import sys
+import os
 
 
 def load_data(filepath):
     with open(filepath, "r", encoding="utf-8") as file_handler:
-        return json.load(file_handler)
+        try:
+            return json.load(file_handler)
+        except ValueError:
+            return None
 
 
 def get_bars(bars_info):
@@ -31,11 +35,11 @@ def get_min_bar(bars):
 
 def find_nearest_bar(x_coord, y_coord):
     nearest_bar = min(
-            bars,
-            key=lambda z: (
-                (z["geometry"]["coordinates"][0]-x_coord)**2 +
-                (z["geometry"]["coordinates"][1]-y_coord)**2
-            ) ** 0.5
+        bars,
+        key=lambda z: (
+            (z["geometry"]["coordinates"][0]-x_coord)**2 +
+            (z["geometry"]["coordinates"][1]-y_coord)**2
+        ) ** 0.5
     )
     return nearest_bar
 
@@ -46,8 +50,7 @@ def get_coords():
     try:
         return float(x_coord), float(y_coord)
     except ValueError:
-        print("Неверный формат координат,\
-         координаты должны быть заданы числом с плавающей точкой")
+        return None, None
 
 
 def print_bar(bar_type, bar_name):
@@ -59,14 +62,20 @@ if __name__ == "__main__":
         filepath = sys.argv[1]
     else:
         exit("Файл не выбран. Выберите файл")
-    bars_info = load_data(filepath)
-    bars = get_bars(bars_info)
-    min_bar = get_min_bar(bars)
-    max_bar = get_max_bar(bars)
-    x_coord, y_coord = get_coords()
-    if not (x_coord and y_coord):
-        exit("Координаты не введены")
-    nearest_bar = find_nearest_bar(x_coord, y_coord)
-    print_bar("Самый большой бар", max_bar)
-    print_bar("Самый маленький бар", min_bar)
-    print_bar("Ближайший к Вам бар", nearest_bar)
+    if os.path.exists(filepath):
+        bars_info = load_data(filepath)
+        if bars_info is None:
+            exit("Файл не является JSON объектом")
+        else:
+            bars = get_bars(bars_info)
+            min_bar = get_min_bar(bars)
+            max_bar = get_max_bar(bars)
+            x_coord, y_coord = get_coords()
+            if not (x_coord and y_coord):
+                exit("Координаты не введены или неверный формат")
+            nearest_bar = find_nearest_bar(x_coord, y_coord)
+            print_bar("Самый большой бар", max_bar)
+            print_bar("Самый маленький бар", min_bar)
+            print_bar("Ближайший к Вам бар", nearest_bar)
+    else:
+        exit("Файла нет в директории")
