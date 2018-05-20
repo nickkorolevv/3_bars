@@ -17,19 +17,12 @@ def get_bars(bars_info):
 
 
 def get_max_bar(bars):
-    max_bar = max(
-        bars,
-        key=lambda bar:
-        bar["properties"]["Attributes"]["SeatsCount"]
-    )
+    max_bar = max(bars, key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
     return max_bar
 
 
 def get_min_bar(bars):
-    min_bar = min(
-        bars, key=lambda bar:
-        bar["properties"]["Attributes"]["SeatsCount"]
-    )
+    min_bar = min(bars, key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
     return min_bar
 
 
@@ -62,20 +55,18 @@ if __name__ == "__main__":
         filepath = sys.argv[1]
     else:
         exit("Файл не выбран. Выберите файл")
-    if os.path.exists(filepath):
-        bars_info = load_data(filepath)
-        if bars_info is None:
-            exit("Файл не является JSON объектом")
-        else:
-            bars = get_bars(bars_info)
-            min_bar = get_min_bar(bars)
-            max_bar = get_max_bar(bars)
-            x_coord, y_coord = get_coords()
-            if not (x_coord and y_coord):
-                exit("Координаты не введены или неверный формат")
-            nearest_bar = find_nearest_bar(x_coord, y_coord)
-            print_bar("Самый большой бар", max_bar)
-            print_bar("Самый маленький бар", min_bar)
-            print_bar("Ближайший к Вам бар", nearest_bar)
-    else:
+    if not(os.path.exists(filepath)):
         exit("Файла нет в директории")
+    bars_info = load_data(filepath)
+    if bars_info is None:
+        exit("Файл не является JSON объектом")
+    bars = get_bars(bars_info)
+    min_bar = get_min_bar(bars)
+    max_bar = get_max_bar(bars)
+    x_coord, y_coord = get_coords()
+    if not (x_coord and y_coord):
+        exit("Координаты не введены или неверный формат")
+    nearest_bar = find_nearest_bar(x_coord, y_coord)
+    print_bar("Самый большой бар", max_bar)
+    print_bar("Самый маленький бар", min_bar)
+    print_bar("Ближайший к Вам бар", nearest_bar)
